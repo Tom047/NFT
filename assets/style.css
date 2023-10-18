@@ -1,0 +1,37 @@
+h1 {
+    font-family: 'Dela Gothic One', cursive;
+    font-size: 40px;
+    text-align: center; /* Center the title text */
+}
+
+.transact-form {
+    width: 300px;
+    margin: 0 auto; /* Center the form horizontally */
+    font-family: 'Dela Gothic One', sans-serif;
+    text-align: center; /* Center the form elements */
+    margin-top: 20px; /* Adjust the top margin as needed */
+}
+
+.transact-form label {
+    display: block; /* Place labels on a new line */
+    margin-bottom: 5px;
+}
+
+.transact-form input {
+    width: 100%; /* Make input fields full width */
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.transact-form button {
+    padding: 10px 20px;
+    background-color: #1450A3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Make the button full width */
+}
+
+.transact-form button:hover {
+    background-color: #191D88;
+}
