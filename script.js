@@ -580,9 +580,16 @@ let web3;
 let contract;
 
 // Initialize web3 and contract when the script is loaded
-const Web3 = require('web3');
-web3 = new Web3(window.ethereum);
-contract = new web3.eth.Contract(contractABI, contractAddress);
+// const Web3 = require('web3');
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        contract = new web3.eth.Contract(contractABI, contractAddress);
+    } else {
+        console.log("Please install MetaMask");
+    }
+});
+
 
 // Function to connect to MetaMask
 async function connectToMetaMask() {
@@ -598,16 +605,37 @@ async function connectToMetaMask() {
     }
 }
 
-// Call init when your page/app loads:
-document.addEventListener('DOMContentLoaded', async () => {
+// Function to handle transactions
+async function transact() {
     try {
-        // Request access to the user's MetaMask account
+        // Get the user's account
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        console.log(accounts[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
+        const account = accounts[0];
 
-    // After web3 and contract are initialized, add event listener to Play button:
-    document.getElementById('playButton').addEventListener('click', play);
-});
+        // Get the input values
+        const to = document.getElementById('to').value;
+        const tokenId = document.getElementById('tokenId').value;
+        const uri = document.getElementById('uri').value;
+
+        if (!web3.utils.isAddress(to)) {
+            alert('Please enter a valid Ethereum address.');
+            return;
+        }
+
+        if (!tokenId || isNaN(tokenId)) {
+            alert('Please enter a valid Token ID.');
+            return;
+        }
+
+        if (!uri) {
+            alert('Please enter a valid URI.');
+            return;
+        }
+
+        const transaction = await contract.methods.safeMint(to, tokenId, uri).send({ from: account });
+
+        console.log('Transaction: ', transaction);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
